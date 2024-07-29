@@ -53,7 +53,6 @@ const onIntersection = (entries, observer) => {
 
 /**
  * Retrieves the observed elements based on the default options.
- *
  * @returns {Array<HTMLElement>} The collection of observed elements.
  */
 export const getObservedElements = () => {
