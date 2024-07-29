@@ -17,6 +17,16 @@ const clearObserver = () => {
   intersectionObserver = null;
 };
 
+const observeViewPort = (entry) => {
+  if (entry.boundingClientRect.top < 0) {
+    entry.target.classList.add("on-top");
+    entry.target.classList.remove("on-bottom");
+  } else if (entry.boundingClientRect.bottom > window.innerHeight) {
+    entry.target.classList.add("on-bottom");
+    entry.target.classList.remove("on-top");
+  }
+};
+
 /**
  * Checks if the observer is disabled based on the default options.
  *
@@ -39,13 +49,7 @@ const onIntersection = (entries, observer) => {
     const hasOnceFlag = target.dataset.animationOnce !== undefined;
     const shouldRepeat = hasRepeatFlag || !(hasOnceFlag || defaultOptions.once);
 
-    if (entry.boundingClientRect.top < 0) {
-      entry.target.classList.add("on-top");
-      entry.target.classList.remove("on-bottom");
-    } else if (entry.boundingClientRect.bottom > window.innerHeight) {
-      entry.target.classList.add("on-bottom");
-      entry.target.classList.remove("on-top");
-    }
+    observeViewPort(entry);
 
     if (entry.intersectionRatio >= defaultOptions.threshold) {
       animate(entry);
