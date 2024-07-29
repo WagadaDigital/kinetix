@@ -4,7 +4,31 @@ A simple and modular scroll animation library
 
 ## Pseudocode
 
-### Step 1: Utility Functions
+### Step 1: Define Configuration Options
+
+Create a configuration module to handle default and custom settings.
+
+```JavaScript
+// Config.js
+export const defaultOptions = {
+  root: null,
+  rootMargin: '0% 50%',
+  threshold: 0.5,
+  animateClassName: 'animate',
+  disabledClassName: 'disabled',
+  enterEventName: 'in',
+  exitEventName: 'out',
+  selector: '[data-animate]',
+  once: true,
+  disabled: false,
+};
+
+export function setOptions(settings) {
+  return { ...defaultOptions, ...settings };
+}
+```
+
+### Step 2: Utility Functions
 
 Create utility functions for common tasks (e.g., class manipulation, event dispatching).
 
@@ -24,7 +48,7 @@ export function dispatchEvent(name, entry) {
 }
 ```
 
-### Step 2: Intersection Observer Manager
+### Step 3: Intersection Observer Manager
 
 Create a module to handle the IntersectionObserver logic.
 
@@ -51,7 +75,7 @@ export function disconnectObserver() {
 }
 ```
 
-### Step 3: Animation Control
+### Step 4: Animation Control
 
 Create modules for enabling, disabling, and controlling animations.
 
@@ -74,7 +98,7 @@ export function clearAnimation(element, options) {
 }
 ```
 
-### Step 4: Main Library Initialization
+### Step 5: Main Library Initialization
 
 Create the main module to initialize and control the library.
 
