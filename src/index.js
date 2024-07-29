@@ -3,14 +3,11 @@ import "./index.css";
 import { setOptions, defaultOptions } from "./config.js";
 import { disable, enable, reset, update, isDisabled } from "./observer.js";
 
-let elements = [];
-
 const init = (settings = defaultOptions) => {
   setOptions(settings);
 
   if (typeof window === "undefined") {
     return {
-      elements,
       disable,
       enable,
       reset,
@@ -29,7 +26,6 @@ const init = (settings = defaultOptions) => {
   }
 
   return {
-    elements,
     disable,
     enable,
     reset,
