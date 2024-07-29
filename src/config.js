@@ -1,6 +1,6 @@
 export let defaultOptions = {
   root: null,
-  rootMargin: "0% 50%",
+  rootMargin: "0% 30%",
   threshold: 0.5,
   animateClassName: "data-animate",
   disabledClassName: "data-disabled",

@@ -1,6 +1,5 @@
 [data-animation] {
-  transition-duration: 0.2s;
-  transition-timing-function: ease;
+  transition-timing-function: cubic-bezier(0.39, 0.575, 0.565, 1);
 }
 
 [data-animation][data-animation-easing="linear"] {
@@ -119,9 +118,7 @@
   transition-timing-function: cubic-bezier(0.68, -0.55, 0.265, 1.55);
 }
 
-/**
- * Animations
- */
+/* Fade */
 [data-animation|="fade"] {
   opacity: 0;
   transition-property: opacity;
@@ -132,25 +129,10 @@ body.data-disabled [data-animation|="fade"] {
   opacity: 1;
 }
 
+/* Slide */
 [data-animation|="slide"] {
   opacity: 0;
   transition-property: opacity, transform;
-}
-
-[data-animation="slide-up"] {
-  transform: translateY(24px);
-}
-
-[data-animation="slide-down"] {
-  transform: translateY(-24px);
-}
-
-[data-animation="slide-left"] {
-  transform: translateX(20%);
-}
-
-[data-animation="slide-right"] {
-  transform: translateX(-20%);
 }
 
 [data-animation|="slide"].data-animate,
@@ -159,6 +141,23 @@ body.data-disabled [data-animation|="slide"] {
   transform: none;
 }
 
+[data-animation="slide-up"] {
+  transform: translateY(48px);
+}
+
+[data-animation="slide-down"] {
+  transform: translateY(-48px);
+}
+
+[data-animation="slide-left"] {
+  transform: translateX(48px);
+}
+
+[data-animation="slide-right"] {
+  transform: translateX(-48px);
+}
+
+/* Zoom */
 [data-animation|="zoom"] {
   opacity: 0;
   transition-property: opacity, transform;
@@ -175,31 +174,5 @@ body.data-disabled [data-animation|="slide"] {
 [data-animation|="zoom"].data-animate,
 body.data-disabled [data-animation|="zoom"] {
   opacity: 1;
-  transform: none;
-}
-
-[data-animation|="flip"] {
-  backface-visibility: hidden;
-  transition-property: transform;
-}
-
-[data-animation="flip-left"] {
-  transform: perspective(2000px) rotateY(-91deg);
-}
-
-[data-animation="flip-right"] {
-  transform: perspective(2000px) rotateY(91deg);
-}
-
-[data-animation="flip-up"] {
-  transform: perspective(2000px) rotateX(-91deg);
-}
-
-[data-animation="flip-down"] {
-  transform: perspective(2000px) rotateX(91deg);
-}
-
-[data-animation|="flip"].data-animate,
-body.data-disabled [data-animation|="flip"] {
   transform: none;
 }
