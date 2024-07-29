@@ -1,9 +1,9 @@
 [data-animation] {
   transition-duration: 0.2s;
   transition-delay: 0s;
-  transition-duration: var(--sal-duration, 0.2s);
-  transition-delay: var(--sal-delay, 0s);
-  transition-timing-function: var(--sal-easing, ease);
+  transition-duration: 0.2s;
+  transition-delay: 0s;
+  transition-timing-function: ease;
 }
 
 [data-animation][data-animation-duration="200"] {
