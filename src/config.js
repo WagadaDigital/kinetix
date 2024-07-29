@@ -4,10 +4,10 @@ export let defaultOptions = {
   threshold: 0.5,
   animateClassName: "data-animate",
   disabledClassName: "data-disabled",
-  enterEventName: "sal:in",
-  exitEventName: "sal:out",
+  enterEventName: "animation:in",
+  exitEventName: "animation:out",
   selector: "[data-animation]",
-  once: true,
+  once: false,
   disabled: false,
 };
 

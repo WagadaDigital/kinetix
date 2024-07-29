@@ -24,8 +24,8 @@ export const isDisabled = () =>
 const onIntersection = (entries, observer) => {
   entries.forEach((entry) => {
     const { target } = entry;
-    const hasRepeatFlag = target.dataset.salRepeat !== undefined;
-    const hasOnceFlag = target.dataset.salOnce !== undefined;
+    const hasRepeatFlag = target.dataset.animationRepeat !== undefined;
+    const hasOnceFlag = target.dataset.animationOnce !== undefined;
     const shouldRepeat = hasRepeatFlag || !(hasOnceFlag || defaultOptions.once);
 
     if (entry.intersectionRatio >= defaultOptions.threshold) {
