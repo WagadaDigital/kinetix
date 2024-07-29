@@ -13,6 +13,7 @@ export const defaultOptions = {
 
 /**
  * Sets the options for the application.
+ *
  * @param {Object} settings - The settings object.
  * @returns {Object} - The merged options object.
  */
