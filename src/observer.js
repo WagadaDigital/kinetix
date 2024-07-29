@@ -17,10 +17,21 @@ const clearObserver = () => {
   intersectionObserver = null;
 };
 
+/**
+ * Checks if the observer is disabled based on the default options.
+ *
+ * @returns {boolean} Returns true if the observer is disabled, false otherwise.
+ */
 export const isDisabled = () =>
   defaultOptions.disabled ||
   (typeof defaultOptions.disabled === "function" && defaultOptions.disabled());
 
+/**
+ * Handles the intersection callback for the Intersection Observer.
+ *
+ * @param {IntersectionObserverEntry[]} entries - The array of intersection entries.
+ * @param {IntersectionObserver} observer - The Intersection Observer instance.
+ */
 const onIntersection = (entries, observer) => {
   entries.forEach((entry) => {
     const { target } = entry;
@@ -40,6 +51,11 @@ const onIntersection = (entries, observer) => {
   });
 };
 
+/**
+ * Retrieves the observed elements based on the default options.
+ *
+ * @returns {Array<HTMLElement>} The collection of observed elements.
+ */
 export const getObservedElements = () => {
   const collection = [].filter.call(
     document.querySelectorAll(defaultOptions.selector),
