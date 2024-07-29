@@ -8,12 +8,13 @@ export const clearAnimation = (element) => {
 
 export const animate = (entry) => {
   const target = entry.target;
-  const duration = target.dataset.animationDuration || defaultOptions.duration;
+  const animationDuration =
+    target.dataset.animationDuration || defaultOptions.animationDuration;
   target.classList.add(defaultOptions.animateClassName);
   dispatchEvent(defaultOptions.enterEventName, entry);
 
-  if (duration) {
-    target.style.transitionDuration = `${duration}ms`;
+  if (animationDuration) {
+    target.style.transitionDuration = `${animationDuration}ms`;
   }
 };
 
