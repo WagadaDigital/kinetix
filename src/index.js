@@ -3,8 +3,6 @@
  * Performance focused, lightweight scroll animation library
  */
 
-import "./sal.scss";
-
 const SSR_MESSAGE = "Sal was not initialised! Probably it is used in SSR.";
 
 const NOT_SUPPORTED_MESSAGE =
