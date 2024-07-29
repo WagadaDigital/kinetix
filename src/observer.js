@@ -39,6 +39,14 @@ const onIntersection = (entries, observer) => {
     const hasOnceFlag = target.dataset.animationOnce !== undefined;
     const shouldRepeat = hasRepeatFlag || !(hasOnceFlag || defaultOptions.once);
 
+    if (entry.boundingClientRect.top < 0) {
+      entry.target.classList.add("on-top");
+      entry.target.classList.remove("on-bottom");
+    } else if (entry.boundingClientRect.bottom > window.innerHeight) {
+      entry.target.classList.add("on-bottom");
+      entry.target.classList.remove("on-top");
+    }
+
     if (entry.intersectionRatio >= defaultOptions.threshold) {
       animate(entry);
 

@@ -10,7 +10,7 @@ export let defaultOptions = {
   once: false,
   disabled: false,
   animationDuration: 300,
-  animationDelay: 600,
+  animationDelay: 0,
 };
 
 export const setOptions = (settings) => {
