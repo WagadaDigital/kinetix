@@ -1,16 +1,15 @@
 # Kinetix
 
-A simple and modular scroll animation library
+A modular and extensible scroll animation library. This library provides an easy way to add animations to elements when they come into view.
 
-## Pseudocode
+## Basic Usage
 
-### Step 1: Define Configuration Options
-
-Create a configuration module to handle default and custom settings.
+First, include the library in your project and initialize it with the desired settings:
 
 ```JavaScript
-// Config.js
-export const defaultOptions = {
+import ScrollAnimationLibrary from 'scroll-animation-library';
+
+const options = {
   root: null,
   rootMargin: '0% 50%',
   threshold: 0.5,
@@ -23,150 +22,88 @@ export const defaultOptions = {
   disabled: false,
 };
 
-export function setOptions(settings) {
-  return { ...defaultOptions, ...settings };
+ScrollAnimationLibrary.init(options);
+```
+
+## HTML Markup
+
+Add the data-animate attribute to the elements you want to animate:
+
+```html
+<div data-animate>Animate me!</div>
+<div data-animate>Animate me too!</div>
+```
+
+## Custom Animations
+
+Define your custom animation in CSS
+
+```css
+.animate {
+  opacity: 1;
+  transform: translateY(0);
+  transition:
+    opacity 0.5s ease-out,
+    transform 0.5s ease-out;
+}
+
+[data-animate] {
+  opacity: 0;
+  transform: translateY(20px);
 }
 ```
 
-### Step 2: Utility Functions
+## Dynamic Elements
 
-Create utility functions for common tasks (e.g., class manipulation, event dispatching).
+If you dynamically add elements to the DOM, call the update method to observe the new elements:
 
 ```JavaScript
-// Utils.js
-export function addClass(element, className) {
-  element.classList.add(className);
-}
-
-export function removeClass(element, className) {
-  element.classList.remove(className);
-}
-
-export function dispatchEvent(name, entry) {
-  const event = new CustomEvent(name, { bubbles: true, detail: entry });
-  entry.target.dispatchEvent(event);
-}
+ScrollAnimationLibrary.update();
 ```
 
-### Step 3: Intersection Observer Manager
+## API
 
-Create a module to handle the IntersectionObserver logic.
+`init(settings)`
 
-```JavaScript
-// Observer.js
-let observer = null;
+Initializes the library with the provided settings.
 
-export function createObserver(callback, options) {
-  if (!window.IntersectionObserver) {
-    throw new Error('IntersectionObserver is not supported');
-  }
-  observer = new IntersectionObserver(callback, options);
-  return observer;
-}
+Parameters:
 
-export function observeElements(elements) {
-  elements.forEach(element => observer.observe(element));
-}
+    settings (Object): Configuration options for the library.
 
-export function disconnectObserver() {
-  if (observer) {
-    observer.disconnect();
-  }
-}
-```
+Returns:
 
-### Step 4: Animation Control
+    An object with methods to control the library (enable, disable, reset, update).
 
-Create modules for enabling, disabling, and controlling animations.
+`enable()`
 
-```JavaScript
-// AnimationControl.js
-import { addClass, removeClass, dispatchEvent } from './Utils.js';
+Enables animations by launching a new IntersectionObserver.
 
-export function animate(entry, options) {
-  addClass(entry.target, options.animateClassName);
-  dispatchEvent(options.enterEventName, entry);
-}
+`disable()`
 
-export function reverse(entry, options) {
-  removeClass(entry.target, options.animateClassName);
-  dispatchEvent(options.exitEventName, entry);
-}
+Disables animations and clears the IntersectionObserver.
 
-export function clearAnimation(element, options) {
-  removeClass(element, options.animateClassName);
-}
-```
+`reset(newSettings)`
 
-### Step 5: Main Library Initialization
+Resets the library with new settings.
 
-Create the main module to initialize and control the library.
+Parameters:
 
-```JavaScript
-// ScrollAnimationLibrary.js
-import { defaultOptions, setOptions } from './Config.js';
-import { addClass, removeClass } from './Utils.js';
-import { createObserver, observeElements, disconnectObserver } from './Observer.js';
-import { animate, reverse, clearAnimation } from './AnimationControl.js';
+    newSettings (Object): New configuration options.
 
-let options = defaultOptions;
-let elements = [];
+`update()`
 
-function onIntersection(entries, observer) {
-  entries.forEach(entry => {
-    const shouldRepeat = entry.target.dataset.repeat !== undefined || !(entry.target.dataset.once !== undefined || options.once);
-    if (entry.intersectionRatio >= options.threshold) {
-      animate(entry, options);
-      if (!shouldRepeat) {
-        observer.unobserve(entry.target);
-      }
-    } else if (shouldRepeat) {
-      reverse(entry, options);
-    }
-  });
-}
+Updates the observer with new elements to animate. Useful for dynamically injected elements.
 
-function init(settings) {
-  options = setOptions(settings);
+## Options
 
-  if (typeof window === 'undefined') {
-    console.warn('Library is used in SSR.');
-    return { elements, disable, enable, reset, update };
-  }
-
-  if (!options.disabled) {
-    enable();
-  } else {
-    addClass(document.body, options.disabledClassName);
-  }
-
-  return { elements, disable, enable, reset, update };
-}
-
-function enable() {
-  removeClass(document.body, options.disabledClassName);
-  const observer = createObserver(onIntersection, options);
-  elements = Array.from(document.querySelectorAll(options.selector));
-  observeElements(elements);
-}
-
-function disable() {
-  addClass(document.body, options.disabledClassName);
-  disconnectObserver();
-}
-
-function reset(newSettings = {}) {
-  disconnectObserver();
-  elements.forEach(element => clearAnimation(element, options));
-  options = setOptions(newSettings);
-  enable();
-}
-
-function update() {
-  const newElements = Array.from(document.querySelectorAll(options.selector)).filter(element => !element.classList.contains(options.animateClassName));
-  elements.push(...newElements);
-  observeElements(newElements);
-}
-
-export default { init, enable, disable, reset, update };
-```
+- `root (Element | null):` The element that is used as the viewport for checking visibility of the target. Defaults to the browser viewport if not specified.
+- `rootMargin (String):` Margin around the root. Can have values similar to the CSS margin property.
+- `threshold (Number):` A threshold of 0.5 means that when 50% of the target is visible within the root, the callback is invoked.
+- `animateClassName (String):` The class name to be added for the animation.
+- `disabledClassName (String):` The class name to be added to the body when animations are disabled.
+- `enterEventName (String):` The custom event name dispatched when the element enters the viewport.
+- `exitEventName (String):` The custom event name dispatched when the element exits the viewport.
+- `selector (String):` The CSS selector for the elements to animate.
+- `once (Boolean):` If true, the animation will only happen once.
+  disabled (Boolean | Function): If true, disables the animations. Can also be a function that returns a boolean.
