@@ -1,4 +1,4 @@
-export let options = {
+export let defaultOptions = {
   root: null,
   rootMargin: "0% 50%",
   threshold: 0.5,
@@ -12,9 +12,9 @@ export let options = {
 };
 
 export const setOptions = (settings) => {
-  if (settings && settings !== options) {
-    options = {
-      ...options,
+  if (settings && settings !== defaultOptions) {
+    defaultOptions = {
+      ...defaultOptions,
       ...settings,
     };
   }

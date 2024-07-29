@@ -1,15 +1,15 @@
-import { options, setOptions } from "./config.js";
+import { defaultOptions, setOptions } from "./config.js";
 import { animate, reverse, isAnimated, clearAnimation } from "./animations.js";
 
 let elements = [];
 let intersectionObserver = null;
 
 const enableAnimations = () => {
-  document.body.classList.remove(options.disabledClassName);
+  document.body.classList.remove(defaultOptions.disabledClassName);
 };
 
 const disableAnimations = () => {
-  document.body.classList.add(options.disabledClassName);
+  document.body.classList.add(defaultOptions.disabledClassName);
 };
 
 const clearObserver = () => {
@@ -18,17 +18,17 @@ const clearObserver = () => {
 };
 
 export const isDisabled = () =>
-  options.disabled ||
-  (typeof options.disabled === "function" && options.disabled());
+  defaultOptions.disabled ||
+  (typeof defaultOptions.disabled === "function" && defaultOptions.disabled());
 
 const onIntersection = (entries, observer) => {
   entries.forEach((entry) => {
     const { target } = entry;
     const hasRepeatFlag = target.dataset.salRepeat !== undefined;
     const hasOnceFlag = target.dataset.salOnce !== undefined;
-    const shouldRepeat = hasRepeatFlag || !(hasOnceFlag || options.once);
+    const shouldRepeat = hasRepeatFlag || !(hasOnceFlag || defaultOptions.once);
 
-    if (entry.intersectionRatio >= options.threshold) {
+    if (entry.intersectionRatio >= defaultOptions.threshold) {
       animate(entry);
 
       if (!shouldRepeat) {
@@ -42,8 +42,8 @@ const onIntersection = (entries, observer) => {
 
 export const getObservedElements = () => {
   const collection = [].filter.call(
-    document.querySelectorAll(options.selector),
-    (element) => !isAnimated(element, options.animateClassName)
+    document.querySelectorAll(defaultOptions.selector),
+    (element) => !isAnimated(element, defaultOptions.animateClassName)
   );
 
   collection.forEach((element) => intersectionObserver.observe(element));
@@ -60,9 +60,9 @@ export const enable = () => {
   enableAnimations();
 
   intersectionObserver = new IntersectionObserver(onIntersection, {
-    root: options.root,
-    rootMargin: options.rootMargin,
-    threshold: options.threshold,
+    root: defaultOptions.root,
+    rootMargin: defaultOptions.rootMargin,
+    threshold: defaultOptions.threshold,
   });
 
   elements = getObservedElements();
@@ -71,7 +71,7 @@ export const enable = () => {
 export const reset = (settings = {}) => {
   clearObserver();
 
-  Array.from(document.querySelectorAll(options.selector)).forEach(
+  Array.from(document.querySelectorAll(defaultOptions.selector)).forEach(
     clearAnimation
   );
 

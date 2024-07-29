@@ -1,19 +1,19 @@
-import { options } from "./config.js";
-import { fireEvent } from "./events.js";
+import { defaultOptions } from "./config.js";
+import { dispatchEvent } from "./events.js";
 
 export const clearAnimation = (element) => {
-  element.classList.remove(options.animateClassName);
+  element.classList.remove(defaultOptions.animateClassName);
 };
 
 export const animate = (entry) => {
-  entry.target.classList.add(options.animateClassName);
-  fireEvent(options.enterEventName, entry);
+  entry.target.classList.add(defaultOptions.animateClassName);
+  dispatchEvent(defaultOptions.enterEventName, entry);
 };
 
 export const reverse = (entry) => {
   clearAnimation(entry.target);
-  fireEvent(options.exitEventName, entry);
+  dispatchEvent(defaultOptions.exitEventName, entry);
 };
 
 export const isAnimated = (element) =>
-  element.classList.contains(options.animateClassName);
+  element.classList.contains(defaultOptions.animateClassName);

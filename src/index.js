@@ -1,9 +1,11 @@
-import { setOptions, options } from "./config.js";
+import "./index.css";
+
+import { setOptions, defaultOptions } from "./config.js";
 import { disable, enable, reset, update, isDisabled } from "./observer.js";
 
 let elements = [];
 
-const init = (settings = options) => {
+const init = (settings = defaultOptions) => {
   setOptions(settings);
 
   if (typeof window === "undefined") {
