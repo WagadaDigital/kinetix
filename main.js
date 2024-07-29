@@ -1,4 +1,4 @@
-import sal from "../src/index.js";
+import sal from "./src/index.js";
 
 sal({
   threshold: 0.3,
