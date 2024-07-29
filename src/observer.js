@@ -17,7 +17,7 @@ const clearObserver = () => {
   intersectionObserver = null;
 };
 
-const observeViewPort = (entry) => {
+const observeEntries = (entry) => {
   if (entry.boundingClientRect.top < 0) {
     entry.target.classList.add("on-top");
     entry.target.classList.remove("on-bottom");
@@ -49,7 +49,7 @@ const onIntersection = (entries, observer) => {
     const hasOnceFlag = target.dataset.animationOnce !== undefined;
     const shouldRepeat = hasRepeatFlag || !(hasOnceFlag || defaultOptions.once);
 
-    observeViewPort(entry);
+    observeEntries(entry);
 
     if (entry.intersectionRatio >= defaultOptions.threshold) {
       animate(entry);
