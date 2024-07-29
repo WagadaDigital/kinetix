@@ -1,5 +1,5 @@
 import { defaultOptions, setOptions } from "./config.js";
-import { dispatchEvent } from "./utils.js";
+import { animate, reverse } from "./animation-control.js";
 
 const SSR_MESSAGE = "Sal was not initialised! Probably it is used in SSR.";
 
@@ -21,24 +21,6 @@ let intersectionObserver = null;
  */
 const clearAnimation = (element) => {
   element.classList.remove(defaultOptions.animateClassName);
-};
-
-/**
- * Launches animation by adding class.
- * @param {IntersectionObserverEntry} entry
- */
-const animate = (entry) => {
-  entry.target.classList.add(defaultOptions.animateClassName);
-  dispatchEvent(defaultOptions.enterEventName, entry);
-};
-
-/**
- * Reverses animation by removing class.
- * @param {IntersectionObserverEntry} entry
- */
-const reverse = (entry) => {
-  clearAnimation(entry.target);
-  dispatchEvent(defaultOptions.exitEventName, entry);
 };
 
 /**
@@ -91,13 +73,13 @@ const onIntersection = (entries, observer) => {
     const shouldRepeat = hasRepeatFlag || !(hasOnceFlag || defaultOptions.once);
 
     if (entry.intersectionRatio >= defaultOptions.threshold) {
-      animate(entry);
+      animate(entry, defaultOptions);
 
       if (!shouldRepeat) {
         observer.unobserve(target);
       }
     } else if (shouldRepeat) {
-      reverse(entry);
+      reverse(entry, defaultOptions);
     }
   });
 };
