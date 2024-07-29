@@ -141,11 +141,11 @@ body.data-disabled [data-animation|="fade"] {
 }
 
 [data-animation="slide-up"] {
-  transform: translateY(1.5rem);
+  transform: translateY(24px);
 }
 
 [data-animation="slide-down"] {
-  transform: translateY(-20%);
+  transform: translateY(-24px);
 }
 
 [data-animation="slide-left"] {
@@ -205,8 +205,4 @@ body.data-disabled [data-animation|="zoom"] {
 [data-animation|="flip"].data-animate,
 body.data-disabled [data-animation|="flip"] {
   transform: none;
-}
-
-.test {
-  display: block;
 }
