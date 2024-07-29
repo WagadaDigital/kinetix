@@ -1,7 +1,5 @@
-/**
- * Sal - Scroll Animation Library
- * Performance focused, lightweight scroll animation library
- */
+import { defaultOptions, setOptions } from "./config.js";
+import { dispatchEvent } from "./utils.js";
 
 const SSR_MESSAGE = "Sal was not initialised! Probably it is used in SSR.";
 
@@ -12,59 +10,17 @@ const NOT_SUPPORTED_MESSAGE =
   "https://github.com/w3c/IntersectionObserver/tree/master/polyfill";
 
 /**
- * Default options
- */
-let options = {
-  root: null,
-  rootMargin: "0% 50%",
-  threshold: 0.5,
-  animateClassName: "sal-animate",
-  disabledClassName: "sal-disabled",
-  enterEventName: "sal:in",
-  exitEventName: "sal:out",
-  selector: "[data-sal]",
-  once: true,
-  disabled: false,
-};
-
-/**
  * Private
  */
 let elements = [];
 let intersectionObserver = null;
 
 /**
- * Sets options.
- * @param {Object} settings
- */
-const setOptions = (settings) => {
-  if (settings && settings !== options) {
-    options = {
-      ...options,
-      ...settings,
-    };
-  }
-};
-
-/**
  * Clears animation for given element.
  * @param {HTMLElement} element
  */
 const clearAnimation = (element) => {
-  element.classList.remove(options.animateClassName);
-};
-
-/**
- * Dispatches the animate event on the intersection observer entry.
- * @param {IntersectionObserverEntry} detail The entry to fire event on.
- */
-const fireEvent = (name, entry) => {
-  const event = new CustomEvent(name, {
-    bubbles: true,
-    detail: entry,
-  });
-
-  entry.target.dispatchEvent(event);
+  element.classList.remove(defaultOptions.animateClassName);
 };
 
 /**
@@ -72,8 +28,8 @@ const fireEvent = (name, entry) => {
  * @param {IntersectionObserverEntry} entry
  */
 const animate = (entry) => {
-  entry.target.classList.add(options.animateClassName);
-  fireEvent(options.enterEventName, entry);
+  entry.target.classList.add(defaultOptions.animateClassName);
+  dispatchEvent(defaultOptions.enterEventName, entry);
 };
 
 /**
@@ -82,7 +38,7 @@ const animate = (entry) => {
  */
 const reverse = (entry) => {
   clearAnimation(entry.target);
-  fireEvent(options.exitEventName, entry);
+  dispatchEvent(defaultOptions.exitEventName, entry);
 };
 
 /**
@@ -90,20 +46,20 @@ const reverse = (entry) => {
  * @param {HTMLElement} element
  */
 const isAnimated = (element) =>
-  element.classList.contains(options.animateClassName);
+  element.classList.contains(defaultOptions.animateClassName);
 
 /**
  * Enables animations by remove class from body.
  */
 const enableAnimations = () => {
-  document.body.classList.remove(options.disabledClassName);
+  document.body.classList.remove(defaultOptions.disabledClassName);
 };
 
 /**
  * Disables animations by add class from body.
  */
 const disableAnimations = () => {
-  document.body.classList.add(options.disabledClassName);
+  document.body.classList.add(defaultOptions.disabledClassName);
 };
 
 /**
@@ -119,8 +75,8 @@ const clearObserver = () => {
  * @return {Boolean}
  */
 const isDisabled = () =>
-  options.disabled ||
-  (typeof options.disabled === "function" && options.disabled());
+  defaultOptions.disabled ||
+  (typeof defaultOptions.disabled === "function" && defaultOptions.disabled());
 
 /**
  * IntersectionObserver callback.
@@ -132,9 +88,9 @@ const onIntersection = (entries, observer) => {
     const { target } = entry;
     const hasRepeatFlag = target.dataset.salRepeat !== undefined;
     const hasOnceFlag = target.dataset.salOnce !== undefined;
-    const shouldRepeat = hasRepeatFlag || !(hasOnceFlag || options.once);
+    const shouldRepeat = hasRepeatFlag || !(hasOnceFlag || defaultOptions.once);
 
-    if (entry.intersectionRatio >= options.threshold) {
+    if (entry.intersectionRatio >= defaultOptions.threshold) {
       animate(entry);
 
       if (!shouldRepeat) {
@@ -153,8 +109,8 @@ const onIntersection = (entries, observer) => {
  */
 const getObservedElements = () => {
   const collection = [].filter.call(
-    document.querySelectorAll(options.selector),
-    (element) => !isAnimated(element, options.animateClassName)
+    document.querySelectorAll(defaultOptions.selector),
+    (element) => !isAnimated(element, defaultOptions.animateClassName)
   );
 
   collection.forEach((element) => intersectionObserver.observe(element));
@@ -177,9 +133,9 @@ const enable = () => {
   enableAnimations();
 
   intersectionObserver = new IntersectionObserver(onIntersection, {
-    root: options.root,
-    rootMargin: options.rootMargin,
-    threshold: options.threshold,
+    root: defaultOptions.root,
+    rootMargin: defaultOptions.rootMargin,
+    threshold: defaultOptions.threshold,
   });
 
   elements = getObservedElements();
