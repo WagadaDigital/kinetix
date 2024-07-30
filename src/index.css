@@ -142,19 +142,19 @@ body.data-disabled [data-animation|="slide"] {
 }
 
 [data-animation="slide"].data-animate.down-enter {
-  transform: translateY(-24px);
-}
-
-[data-animation="slide"].down-leave {
-  transform: translateY(-24);
+  transform: translateY(-48px);
 }
 
 [data-animation="slide"].data-animate.up-enter {
-  transform: translateY(24px);
+  transform: translateY(48px);
+}
+
+[data-animation="slide"].down-leave {
+  transform: translateY(-144);
 }
 
 [data-animation="slide"].up-leave {
-  transform: translateY(24px);
+  transform: translateY(144px);
 }
 
 [data-animation="slide-left"] {

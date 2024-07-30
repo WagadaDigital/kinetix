@@ -9,8 +9,8 @@ export let defaultOptions = {
   selector: "[data-animation]",
   once: false,
   disabled: false,
-  animationDuration: 300,
-  animationDelay: 60,
+  animationDuration: 150,
+  animationDelay: 90,
 };
 
 export const setOptions = (settings) => {

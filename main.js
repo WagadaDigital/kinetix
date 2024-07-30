@@ -1,6 +1,6 @@
 import sal from "./src/index.js";
 
 sal({
-  threshold: 0.2,
+  threshold: 0.3,
   once: false,
 });
