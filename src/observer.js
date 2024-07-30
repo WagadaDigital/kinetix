@@ -1,11 +1,6 @@
 import { defaultOptions, setOptions } from "./config.js";
 import { animate, reverse, isAnimated, clearAnimation } from "./animations.js";
 
-const thresholdArray = (steps) =>
-  Array(steps + 1)
-    .fill(0)
-    .map((_, index) => index / steps || 0);
-
 let previousY = 0;
 let previousRatio = 0;
 
@@ -25,15 +20,11 @@ const clearObserver = () => {
   intersectionObserver = null;
 };
 
-const observeEntries = (entry) => {
-  console.log(entry.boundingClientRect.height);
-  if (entry.boundingClientRect.top < window.innerHeight / 2) {
-    entry.target.classList.add("position-top");
-    entry.target.classList.remove("position-bottom");
-  } else if (entry.boundingClientRect.bottom >= window.innerHeight / 2) {
-    entry.target.classList.add("position-bottom");
-    entry.target.classList.remove("position-top");
-  }
+const removeHelperClasses = (entry) => {
+  entry.target.classList.remove("down-enter");
+  entry.target.classList.remove("down-leave");
+  entry.target.classList.remove("up-enter");
+  entry.target.classList.remove("up-leave");
 };
 
 /**
@@ -62,19 +53,25 @@ const onIntersection = (entries, observer) => {
     const currentRatio = entry.intersectionRatio;
     const isIntersecting = entry.isIntersecting;
 
-    // observeEntries(entry);
-
     if (currentY < previousY) {
       if (currentRatio > previousRatio && isIntersecting) {
-        console.log("Scrolling down enter");
-      } else {
-        console.log("Scrolling down leave");
+        // console.log("Scrolling down enter");
+        removeHelperClasses(entry);
+        entry.target.classList.add("down-enter");
+      } else if (currentRatio < previousRatio || !isIntersecting) {
+        // console.log("Scrolling down leave");
+        removeHelperClasses(entry);
+        entry.target.classList.add("down-leave");
       }
-    } else if (currentY > previousY && isIntersecting) {
+    } else if (currentY > previousY) {
       if (currentRatio < previousRatio) {
-        console.log("Scrolling up leave");
-      } else {
-        console.log("Scrolling up enter");
+        // console.log("Scrolling up leave");
+        removeHelperClasses(entry);
+        entry.target.classList.add("up-leave");
+      } else if (currentRatio > previousRatio || !isIntersecting) {
+        // console.log("Scrolling up enter");
+        removeHelperClasses(entry);
+        entry.target.classList.add("up-enter");
       }
     }
 
