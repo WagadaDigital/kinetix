@@ -53,6 +53,8 @@ const onIntersection = (entries, observer) => {
 
     observeEntries(entry);
 
+    console.log(entry);
+
     if (entry.intersectionRatio >= defaultOptions.threshold) {
       animate(entry);
 
