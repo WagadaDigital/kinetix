@@ -1,6 +1,14 @@
 import { defaultOptions, setOptions } from "./config.js";
 import { animate, reverse, isAnimated, clearAnimation } from "./animations.js";
 
+const thresholdArray = (steps) =>
+  Array(steps + 1)
+    .fill(0)
+    .map((_, index) => index / steps || 0);
+
+let previousY = 0;
+let previousRatio = 0;
+
 let elements = [];
 let intersectionObserver = null;
 
@@ -17,9 +25,8 @@ const clearObserver = () => {
   intersectionObserver = null;
 };
 
-console.log(window.innerHeight / 2);
-
 const observeEntries = (entry) => {
+  console.log(entry.boundingClientRect.height);
   if (entry.boundingClientRect.top < window.innerHeight / 2) {
     entry.target.classList.add("position-top");
     entry.target.classList.remove("position-bottom");
@@ -51,9 +58,28 @@ const onIntersection = (entries, observer) => {
     const hasOnceFlag = target.dataset.animationOnce !== undefined;
     const shouldRepeat = hasRepeatFlag || !(hasOnceFlag || defaultOptions.once);
 
-    observeEntries(entry);
+    const currentY = entry.boundingClientRect.y;
+    const currentRatio = entry.intersectionRatio;
+    const isIntersecting = entry.isIntersecting;
 
-    console.log(entry);
+    // observeEntries(entry);
+
+    if (currentY < previousY) {
+      if (currentRatio > previousRatio && isIntersecting) {
+        console.log("Scrolling down enter");
+      } else {
+        console.log("Scrolling down leave");
+      }
+    } else if (currentY > previousY && isIntersecting) {
+      if (currentRatio < previousRatio) {
+        console.log("Scrolling up leave");
+      } else {
+        console.log("Scrolling up enter");
+      }
+    }
+
+    previousY = currentY;
+    previousRatio = currentRatio;
 
     if (entry.intersectionRatio >= defaultOptions.threshold) {
       animate(entry);
