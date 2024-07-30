@@ -141,12 +141,20 @@ body.data-disabled [data-animation|="slide"] {
   transform: none;
 }
 
-[data-animation="slide"].data-animate.position-top {
-  transform: translateY(48px);
+[data-animation="slide"].data-animate.down-enter {
+  transform: translateY(-24px);
 }
 
-[data-animation="slide"].data-animate.position-bottom {
-  transform: translateY(-48px);
+[data-animation="slide"].down-leave {
+  transform: translateY(-24);
+}
+
+[data-animation="slide"].data-animate.up-enter {
+  transform: translateY(24px);
+}
+
+[data-animation="slide"].up-leave {
+  transform: translateY(24px);
 }
 
 [data-animation="slide-left"] {

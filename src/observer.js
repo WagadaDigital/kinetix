@@ -92,6 +92,7 @@ const onIntersection = (entries, observer) => {
 
 /**
  * Retrieves the observed elements based on the default options.
+ *
  * @returns {Array<HTMLElement>} The collection of observed elements.
  */
 export const getObservedElements = () => {
@@ -110,6 +111,9 @@ export const disable = () => {
   clearObserver();
 };
 
+/**
+ * Enables the observer functionality.
+ */
 export const enable = () => {
   enableAnimations();
 
@@ -122,6 +126,11 @@ export const enable = () => {
   elements = getObservedElements();
 };
 
+/**
+ * Resets the observer and clears any animations.
+ *
+ * @param {Object} settings - The settings object.
+ */
 export const reset = (settings = {}) => {
   clearObserver();
 
@@ -133,6 +142,9 @@ export const reset = (settings = {}) => {
   enable();
 };
 
+/**
+ * Updates the observed elements array by adding new elements.
+ */
 export const update = () => {
   const newElements = getObservedElements();
   elements.push(newElements);
