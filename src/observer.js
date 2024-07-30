@@ -17,11 +17,13 @@ const clearObserver = () => {
   intersectionObserver = null;
 };
 
+console.log(window.innerHeight / 2);
+
 const observeEntries = (entry) => {
-  if (entry.boundingClientRect.top < 0) {
+  if (entry.boundingClientRect.top < window.innerHeight / 2) {
     entry.target.classList.add("position-top");
     entry.target.classList.remove("position-bottom");
-  } else if (entry.boundingClientRect.bottom > window.innerHeight) {
+  } else if (entry.boundingClientRect.bottom >= window.innerHeight / 2) {
     entry.target.classList.add("position-bottom");
     entry.target.classList.remove("position-top");
   }
