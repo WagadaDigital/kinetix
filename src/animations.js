@@ -17,8 +17,8 @@ export const clearAnimation = (element) => {
  */
 export const animate = (entry) => {
   entry.target.classList.add(defaultOptions.animateClassName);
-  entry.target.classList.remove("on-top");
-  entry.target.classList.remove("on-bottom");
+  entry.target.classList.remove("position-top");
+  entry.target.classList.remove("position-bottom");
   dispatchEvent(defaultOptions.enterEventName, entry);
 };
 

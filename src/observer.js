@@ -19,11 +19,11 @@ const clearObserver = () => {
 
 const observeEntries = (entry) => {
   if (entry.boundingClientRect.top < 0) {
-    entry.target.classList.add("on-top");
-    entry.target.classList.remove("on-bottom");
+    entry.target.classList.add("position-top");
+    entry.target.classList.remove("position-bottom");
   } else if (entry.boundingClientRect.bottom > window.innerHeight) {
-    entry.target.classList.add("on-bottom");
-    entry.target.classList.remove("on-top");
+    entry.target.classList.add("position-bottom");
+    entry.target.classList.remove("position-top");
   }
 };
 
